@@ -1,5 +1,5 @@
- # LIMMA-pipeline-proteiomics
-1. Implementation of LIMMA pipeline in R programming language for two group comparision in proteomics data as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069
+LIMMA-pipeline-proteiomics
+1. Implementation of LIMMA pipeline in R programming language for two group comparision in proteomics data as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069 (Kammers, Kai, et al. "Detecting significant changes in protein abundance." EuPA open proteomics 7 (2015): 11-19.)
 2. You need following R libraries and a proteingroups file (see inside Example folder)
 dplyr, stringr, MASS, plotly, limma, qvalue, htmlwidgets
 3. Just run the lima_main.R code. The helper functions must be in the same directory as the main. After successful run it will create two volcano plots and a txt file with data in the present working directory. One plot is using limma moderated pval and the other one using ordinary t-test.
