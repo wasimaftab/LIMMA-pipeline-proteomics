@@ -44,6 +44,17 @@ readinteger <- function(str)
   return(n)
 }
 
+readfloat <- function(str)
+{
+  n <- readline(prompt = str)
+  n <- as.double(n)
+  if (is.na(n) || (n <= 0)) {
+    print("Enter a positive number only")
+    n <- readfloat(str)
+  }
+  return(n)
+}
+
 ## fitting a normal distribution
 fitnormal <- function (x, exact = TRUE) {
   if (exact) {
@@ -151,7 +162,7 @@ data_sanity_check <- function(temp, exprement, exp_str) {
   return(exprement_reps)
 }
 
-display_plotly_figs <- function(dat, filename_mod, filename_ord) {
+display_plotly_figs <- function(dat, FC_Cutoff, filename_mod, filename_ord) {
   f <- list(family = "Arial, sans-serif",
             size = 18,
             color = "#7f7f7f")

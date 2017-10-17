@@ -1,4 +1,4 @@
-#This is an implementation of LIMMA pipeline on two group comparision as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069
+#This is an omplementation of LIMMA statistics on two group comparision as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069
 #Author:Wasim Aftab
 library(dplyr)
 library(stringr)
@@ -9,15 +9,13 @@ library(qvalue)
 library(htmlwidgets)
 cat('\014')
 rm(list = ls())
-setwd('C:/Users/W.Aftab/Desktop/Research/Ignasi/LIMMA Testing')
-
+##Chdir to source dir
+this.dir <- dirname(parent.frame(2)$ofile)
+setwd(this.dir)
 source("limma_helper_functions.R")
 #Load the proteingroups file
 myFilePath <- file.choose()
 temp <- unlist(strsplit(myFilePath, "\\", fixed = TRUE))
-filename <- temp[length(temp)]
-temp <- unlist(strsplit(filename, "_"))
-temp2 <- unlist(strsplit(temp[3], ".txt"))
 proteingroups <-
   as.data.frame(read.table(myFilePath, header = TRUE, sep = "\t"))
 ###Kill the code if proteingroups does not contain crap columns#######################################
@@ -30,18 +28,20 @@ if (!nrow(temp) * ncol(temp)) {
   stop("File error, It does not contain crap...enter another file with crap")
 }
 ######################################################################################################
+##Display data to faciliate choice of treatment and control
 temp <- select(proteingroups, matches("(ibaq|lfq)"))
 print(names(temp))
 
-#remove "+" identifeid rows from proteingroups
-crap <- as.character(proteingroups$Only.identified.by.site)
-idx1 <- which(!is.na(match(crap, "+")))
-crap <- as.character(proteingroups$Reverse)
-idx2 <- which(!is.na(match(crap, "+")))
-crap <- as.character(proteingroups$Potential.contaminant)
-idx3 <- which(!is.na(match(crap, "+")))
-idx <- union(idx1, union(idx2, idx3))
+# #remove "+" identifeid rows from proteingroups##################################################
+idx <- NULL
+# temp <- as.matrix(select(proteingroups, matches("(Only.identified.by.site|Reverse|Potential.contaminant)")))
+temp <- select(proteingroups, matches("(Only.identified.by.site|Reverse|Potential.contaminant)"))
+for (i in 1:ncol(temp)){
+  index <- which(unlist(!is.na(match(temp[,i], "+"))))
+  idx <- union(idx, index)
+}
 proteingroups <- proteingroups[-idx, ] # removing indexed rows
+# ################################################################################################
 
 #Extrat Uniprot and gene symbols
 Uniprot <- character(length = nrow(proteingroups))
@@ -93,7 +93,7 @@ print(names(data))
 rep_treats <-
   readinteger("Enter the number of treatment replicates=")
 rep_conts <- readinteger("Enter the number of control replicates=")
-FC_Cutoff <- readinteger("Enter the fold change cut off=")
+FC_Cutoff <- readfloat("Enter the fold change cut off=")
 data_limma <- log2(as.matrix(data[c(1:(rep_treats + rep_conts))]))
 data_limma[is.infinite(data_limma)] <- NA
 nan_idx <- which(is.na(data_limma))
@@ -108,16 +108,14 @@ width <- sigma_cutoff * sigma
 new_width <- width * new_width_cutoff
 new_sigma <- new_width / sigma_cutoff
 new_mean <- mu - downshift * sigma
-imputed_vals_my = rnorm(length(nan_idx), mu, sigma)
+imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
 data_limma[nan_idx] <- imputed_vals_my
 
 ##Limma main code
 design <-
   model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
 colnames(design) <- c("Intercept", "Diff")
-head(design)
 res.eb <- eb.fit(data_limma, design, Symbol)
-head(res.eb)
 Sig_FC_idx <-
   union(which(res.eb$logFC < (-FC_Cutoff)), which(res.eb$logFC > FC_Cutoff))
 Sig_Pval_mod_idx <- which(res.eb$p.mod < 0.05)
@@ -142,7 +140,8 @@ filename_mod <-
   readline('Enter a filename for limma plot= ')
 filename_ord <-
   readline('Enter a filename for ordinary t-test plot= ')
-display_plotly_figs(dat, filename_mod, filename_ord)
+
+display_plotly_figs(dat, FC_Cutoff, filename_mod, filename_ord)
 
 ##Save the data file
 final_data <-
@@ -152,7 +151,6 @@ final_data <-
         data_limma,
         dat)
 final_data <- select(final_data, -matches("^gene$"))
-head(final_data)
 write.table(
   final_data,
   'final_data.txt',
