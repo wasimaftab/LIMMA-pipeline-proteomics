@@ -1,4 +1,10 @@
 # LIMMA-pipeline-proteomics
+
+[
+![limma_pipeline](https://user-images.githubusercontent.com/29901809/31750512-e4fec182-b480-11e7-90d6-b9c432572941.gif)
+](url)
+
+
 1. Implementation of LIMMA pipeline in R programming language for two group comparision in proteomics data as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069 (Kammers, Kai, et al. "Detecting significant changes in protein abundance." EuPA open proteomics 7 (2015): 11-19.)
 2. You need following R libraries and a proteingroups file (see inside Example folder)
 dplyr, stringr, MASS, plotly, limma, qvalue, htmlwidgets
