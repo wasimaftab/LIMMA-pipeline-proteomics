@@ -153,7 +153,7 @@ final_data <-
 final_data <- select(final_data, -matches("^gene$"))
 write.table(
   final_data,
-  'final_data.txt',
+  'final_data.tsv',
   sep = '\t',
   row.names = FALSE,
   col.names = TRUE
