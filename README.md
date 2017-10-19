@@ -1,4 +1,4 @@
-# LIMMA-pipeline-proteomics
+# LIMMA pipeline
 
 ![limma_pipeline_finite](https://user-images.githubusercontent.com/29901809/31774275-917afc3c-b4e5-11e7-900b-9ee2f36c8fb0.gif)
 
