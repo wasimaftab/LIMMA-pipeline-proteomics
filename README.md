@@ -15,7 +15,7 @@ dplyr, stringr, MASS, plotly, limma, qvalue, htmlwidgets
 
 ### Areas for Improvements
 * A mechanism to install the needed R packages automatically.
-* Add more checks for undesired input.
+* Add more checks for undesired inputs.
 
 ### Reference:
 [1] Kammers, Kai, et al. "Detecting significant changes in protein abundance." EuPA open proteomics 7 (2015): 11-19.
