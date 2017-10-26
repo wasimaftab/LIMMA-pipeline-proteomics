@@ -1,4 +1,4 @@
-#This is an omplementation of LIMMA statistics on two group comparision as described in the paper http://www.sciencedirect.com/science/article/pii/S2212968515000069
+#This is a pipeline to analyze proteiomic data in a proteinGroups.txt (MaxQuant output) file for two group comparision
 #Author:Wasim Aftab
 library(dplyr)
 library(stringr)
@@ -135,14 +135,6 @@ dat <-
     NegLogPvalOrd = (-log10(res.eb$p.ord))
   )
 
-##Create plotly object and save plot as html
-filename_mod <-
-  readline('Enter a filename for limma plot= ')
-filename_ord <-
-  readline('Enter a filename for ordinary t-test plot= ')
-
-display_plotly_figs(dat, FC_Cutoff, filename_mod, filename_ord)
-
 ##Save the data file
 final_data <-
   cbind(select(proteingroups, matches("^id$")),
@@ -153,6 +145,15 @@ final_data <-
 final_data <- select(final_data, -matches("^gene$"))
 filename_final_data <-
   readline('Enter a filename for final data= ')
+
+##Create plotly object and save plot as html
+filename_mod <-
+  readline('Enter a filename for limma plot= ')
+filename_ord <-
+  readline('Enter a filename for ordinary t-test plot= ')
+
+display_plotly_figs(dat, FC_Cutoff, filename_mod, filename_ord)
+
 write.table(
   final_data,
   paste(filename_final_data, '.tsv', sep = ''),
