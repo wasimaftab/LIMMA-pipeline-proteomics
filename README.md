@@ -1,6 +1,6 @@
 # LIMMA pipeline
 
-![limma_pipeline_finite](https://user-images.githubusercontent.com/29901809/31774275-917afc3c-b4e5-11e7-900b-9ee2f36c8fb0.gif)
+![limma_pipeline_infinite](https://user-images.githubusercontent.com/29901809/32143726-4a82b77c-bcae-11e7-8435-b447cc2274c0.gif)
 
 * Implementation of LIMMA (Linear Models for Microarray Data), an empirical Bayes method for two group comparision in a proteomic experiment.[1]
 * The pipeline is implemented in R programming language and you need following R libraries:
