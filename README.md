@@ -11,7 +11,7 @@ dplyr, stringr, MASS, plotly, limma, qvalue, htmlwidgets
 * One plot is using limma moderated pval and the other one using ordinary t-test.
 * The code will force you to provide as input correct names for treatment and control as it appears in the proteingroups file. Part of the name (case insensitive) should also be fine.
 * If the columns 'Potential contaminant', 'Reverse' and 'Only.identified by site' is not present in the proteingroups.txt file the code terminates with a message.
-* Tested on win7, Professional, 64 bit using Rstudio 1.1.383
+* Tested on win7 Professional 64 bit, Rstudio 1.1.383, R version 3.3.1
 
 ### Areas for Improvements
 * A mechanism to install the needed R packages automatically.
