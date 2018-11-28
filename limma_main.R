@@ -152,7 +152,7 @@ filename_mod <-
 filename_ord <-
   readline('Enter a filename for ordinary t-test plot= ')
 
-display_plotly_figs(dat, FC_Cutoff, filename_mod, filename_ord)
+display_plotly_figs(final_data, FC_Cutoff, filename_mod, filename_ord)
 
 write.table(
   final_data,
