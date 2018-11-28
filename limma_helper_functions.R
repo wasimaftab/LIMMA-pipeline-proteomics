@@ -146,9 +146,7 @@ display_plotly_figs <-
       tickfont = f2
     )
     
-    # dat <- read.table("final_data.tsv", sep = "\t", header = TRUE)
-    # FC_Cutoff <- 2
-    
+    # Plot Limma result
     p1 <-
       plot_ly(
         dat,
