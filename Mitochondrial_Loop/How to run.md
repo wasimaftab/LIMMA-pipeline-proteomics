@@ -1,4 +1,4 @@
-### This is a pipeline to analyze proteiomic data for the paper Molecular wiring of a mitochondrial translational feedback loop (accepted in Molecular Cell, 2019)
+### This is a pipeline to analyze proteiomic data for the paper "Molecular wiring of a mitochondrial translational feedback loop" (accepted in Molecular Cell, 2019)
 
 * Implementation of LIMMA (Linear Models for Microarray Data), an empirical Bayes method for two group comparision in a proteomic experiment [1].
 * The pipeline is implemented in R programming language and needed libraries are installed automatically.
@@ -7,7 +7,7 @@
 * The helper functions must be in the same directory as the main. 
 * After successful run it will create volcano plots both in html and pdf formats and a tsv file containing final data inside a folder called  "Results" in the same directory where the main function is present. 
 * One plot is using limma moderated statistics and the other one using ordinary t-test.
-* In addition, the code will create files containng Outlier proteins present (if any) in control and treatment replicates with lfq/ibaq values, for example an outlier in treatment is defined as follows,
+* In addition, the code will create files containng Outlier proteins present (if any) in control and treatment replicates with LFQ/iBAQ values, for example an outlier in treatment is defined as follows,
 
  |Uniprot | Symbol  |treat_1 |  treat_2 |  treat_3 |  contrl_1 |   contrl_2  |  contrl_3|
  |--------|---------|--------|----------|----------|-----------|-------------|----------|
