@@ -27,6 +27,10 @@
 | qvalue       | 2.8.0  |
 
 * We recommend using the same versions of the packages (atleast for plotly)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6f81e5b82ef8ceafd85a19c763089a2f3d9efd3b
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages,
 
 | Package       | Version       |
