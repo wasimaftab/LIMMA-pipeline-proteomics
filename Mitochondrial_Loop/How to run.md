@@ -27,22 +27,7 @@
 | qvalue       | 2.8.0  |
 
 * We recommend using the same versions of the packages (atleast for plotly)
-<<<<<<< HEAD
-=======
-
->>>>>>> 6f81e5b82ef8ceafd85a19c763089a2f3d9efd3b
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages,
-
-| Package       | Version       |
-| ------------- | ------------- |
-| dplyr         | 0.8.3         |
-| stringr       | 0.4.0         |
-| MASS          | 7.3-5.4       |
-| plotly        | 4.9.0         |
-| htmlwidgets   | 0.3           |
-| limma         | 3.42.0        |
-| qvalue        | 2.8.0         |
->>>>>>> 5f1ce69ec330b8fb0f76376c6a0e0061bb74f49c
 
 #### Areas for Improvements
 * Add more checks for undesired inputs.
