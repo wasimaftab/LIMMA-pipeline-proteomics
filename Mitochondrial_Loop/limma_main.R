@@ -10,7 +10,6 @@ cat('\014')
 
 ## Chdir to source dir
 path <- rstudioapi::getActiveDocumentContext()$path
-path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 cur_dir <- getwd()
