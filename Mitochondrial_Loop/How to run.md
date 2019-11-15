@@ -14,7 +14,6 @@
  |P25554   |SGF29	  |0	   |     0	  |    0     |   2810900 |	     0	   |     0    |
 * The code will force you to provide correct names as input for treatment and control as it appears in the proteingroups file. Part of the name (case insensitive) should also be fine.
 * If the columns 'Potential contaminant', 'Reverse' and 'Only.identified by site' is not present in the proteingroups.txt file the code terminates with a message.
-<<<<<<< HEAD
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages
 
 | Package  | Version |
@@ -28,7 +27,6 @@
 | qvalue       | 2.8.0  |
 
 * We recommend using the same versions of the packages (atleast for plotly)
-=======
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages,
 
 | Package       | Version       |
