@@ -28,7 +28,7 @@
 | qvalue       | 2.8.0  |
 
 * We recommend using the same versions of the packages (atleast for plotly)
-=======
+
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages,
 
 | Package       | Version       |
