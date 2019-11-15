@@ -195,7 +195,7 @@ data_limma[nan_idx] <- imputed_vals_my
 ## Read a List of Experimentally Determined Mitochondrial Proteins 
 Mito_proteins <-
   as.data.frame(read.table(
-    "Mitichondial_Proteins/Experimentally_Determined_Mitochondrion_Proteins.txt",
+    "Mitochondrial _Proteins/Experimentally_Determined_Mitochondrion_Proteins.txt",
     header = TRUE
   ))
 Mito_proteins <- as.matrix(Mito_proteins$Gene_Standard_Name)

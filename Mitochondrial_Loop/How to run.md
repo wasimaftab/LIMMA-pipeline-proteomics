@@ -15,16 +15,18 @@
 * The code will force you to provide correct names as input for treatment and control as it appears in the proteingroups file. Part of the name (case insensitive) should also be fine.
 * If the columns 'Potential contaminant', 'Reverse' and 'Only.identified by site' is not present in the proteingroups.txt file the code terminates with a message.
 * Tested on win7 Professional 64 bit, Rstudio 1.1.463, R version 3.6.1 and using the following packages
---------------------
-Package		Version
---------------------
-dplyr       0.8.3
-stringr     0.4.0
-MASS        7.3-5.4
-plotly      4.9.0
-htmlwidgets 0.3
-limma       3.42.0
-qvalue      2.8.0
+
+| Package  | Version |
+| ------------- | ------------- |
+| dplyr         | 0.8.3  |
+| stringr       | 0.4.0  |
+| MASS       | 7.3-5.4 |
+| plotly       | 4.9.0  |
+| htmlwidgets       | 0.3 |
+| limma       | 3.42.0  |
+| qvalue       | 2.8.0  |
+
+* We recommend using the same versions of the packages (atleast for plotly)
 
 ### Areas for Improvements
 * Add more checks for undesired inputs.
