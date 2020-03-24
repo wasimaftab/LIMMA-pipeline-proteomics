@@ -1,5 +1,22 @@
 #This is a pipeline to analyze proteiomic data in a proteinGroups.txt (MaxQuant output) file for two group comparision
 #Author:Wasim Aftab
+
+cat('\014')
+rm(list = ls())
+
+## Installing Bioconductor packages
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+list.of.packages <- c("limma", "qvalue")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) BiocManager::install(new.packages)
+
+## Installing CRAN packages
+list.of.packages <- c("dplyr", "stringr", "MASS", "plotly", "htmlwidgets", "rstudioapi")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+
 library(dplyr)
 library(stringr)
 library(MASS)
@@ -7,11 +24,14 @@ library(plotly)
 library(limma)
 library(qvalue)
 library(htmlwidgets)
-cat('\014')
-rm(list = ls())
-##Chdir to source dir
-this.dir <- dirname(parent.frame(2)$ofile)
-setwd(this.dir)
+library(rstudioapi)
+
+## Chdir to source dir
+path <- rstudioapi::getActiveDocumentContext()$path
+Encoding(path) <- "UTF-8"
+setwd(dirname(path))
+cur_dir <- getwd()
+
 source("limma_helper_functions.R")
 #Load the proteingroups file
 myFilePath <- file.choose()
@@ -161,3 +181,4 @@ write.table(
   row.names = FALSE,
   col.names = TRUE
 )
+setwd(cur_dir)
