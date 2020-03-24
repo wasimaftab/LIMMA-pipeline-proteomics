@@ -11,7 +11,7 @@
 * After successful run it will create volcano plots in html format and a tsv file containing final data inside a folder called  "Results" in the same directory where the main function is present. 
 * One plot is using limma moderated statistics and the other one using ordinary t-test.
 * If the columns 'Potential contaminant', 'Reverse' and 'Only.identified by site' is not present in the proteingroups.txt file the code terminates with a message.
-* Tested on win7 Professional 64 bit, Rstudio 1.1.383, R version 3.3.1
+* Tested on Windows 7 Professional, Windows 10 Enterprise 64 bit, RStudio >= 1.1.383 and R version >= 3.3.1
 
 ### Areas for Improvements
 * Add more sanity checks for undesired inputs.
