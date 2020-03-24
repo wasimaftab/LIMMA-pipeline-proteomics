@@ -130,6 +130,15 @@ if(!flag){
     readinteger("Enter the number of treatment replicates=")
   rep_conts <- readinteger("Enter the number of control replicates=")
   FC_Cutoff <- readfloat("Enter the log fold change cut off=")
+  
+  ## removing blank rows
+  temp <-
+    as.matrix(rowSums(apply(data[, 1:(rep_treats + rep_conts)], 2, as.numeric)))
+  idx <- which(temp == 0)
+  if (length(idx)) {
+    data <- data[-idx,] 
+  }
+  
   data_limma <- log2(as.matrix(data[c(1:(rep_treats + rep_conts))]))
   data_limma[is.infinite(data_limma)] <- NA
   nan_idx <- which(is.na(data_limma))
@@ -146,19 +155,18 @@ if(!flag){
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
   data_limma[nan_idx] <- imputed_vals_my
-  
   ##Limma main code
   design <-
     model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
   colnames(design) <- c("Intercept", "Diff")
-  res.eb <- eb.fit(data_limma, design, Symbol)
+  res.eb <- eb.fit(data_limma, design, data$Symbol)
   Sig_FC_idx <-
     union(which(res.eb$logFC < (-FC_Cutoff)), which(res.eb$logFC > FC_Cutoff))
   Sig_Pval_mod_idx <- which(res.eb$p.mod < 0.05)
   Sig_Pval_ord_idx <- which(res.eb$p.ord < 0.05)
   Sig_mod_idx <-  intersect(Sig_FC_idx, Sig_Pval_mod_idx)
   Sig_ord_idx <-  intersect(Sig_FC_idx, Sig_Pval_ord_idx)
-  categ_Ord <- rep(c("Not Significant"), times = length(Symbol))
+  categ_Ord <- rep(c("Not Significant"), times = length(data$Symbol))
   categ_Mod <- categ_Ord
   categ_Mod[Sig_mod_idx] <- "Significant"
   categ_Ord[Sig_ord_idx] <- "Significant"
@@ -173,9 +181,9 @@ if(!flag){
   
   ##Save the data file
   final_data <-
-    cbind(select(proteingroups, matches("^id$")),
-          Uniprot,
-          Symbol,
+    cbind(select(data, matches("^id$")),
+          data$Uniprot,
+          data$Symbol,
           data_limma,
           dat)
   final_data <- select(final_data, -matches("^gene$"))
