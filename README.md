@@ -5,6 +5,8 @@
 * Implementation of LIMMA (Linear Models for Microarray Data), an empirical Bayes method for two group comparision in a proteomic experiment [1].
 * The pipeline is implemented in R programming language and all the required packages will auto install when the script is run.
 * Run the lima_main.R code and select a MaxQuant outputted proteingroups.txt file (see Example folder). 
+* There are two modes: either use full data or remove outliers before analysis. Proteins that have zero intensities in all the replicates of treatment or control are defined as outliers. 
+  They do not participate in two group comparision and wrote in seperate excel files in the Results folder.
 * Code will ask you to provide treatment and control names. It will guide by printing them on your RStudio console. For example, in the proteinsgroups file in the Example folder there are three treatment replicates iBAQ CA_1, iBAQ CA_2, iBAQ CA_3 and three control replicates iBAQ FA_1, iBAQ FA_2, iBAQ FA_3. So, if you input partial names i.e. ca or CA for the treatment in this example, the code is able to recognise the desired columns.
 * In other words, code will force you to provide as input correct names for treatment and control as it appears in the proteingroups file. Part of the name (case insensitive) should also be fine.
 * The helper functions must be in the same directory as the main. 

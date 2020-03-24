@@ -334,8 +334,8 @@ display_plotly_figs <-
     htmlwidgets::saveWidget(as_widget(p2), paste(filename_ord, '.html', sep = ''))
     
     # ## Save as .pdf
-    export(p1, file = paste(filename_mod, '.pdf', sep = ''))
-    export(p2, file = paste(filename_ord, '.pdf', sep = ''))
+    # export(p1, file = paste(filename_mod, '.pdf', sep = ''))
+    # export(p2, file = paste(filename_ord, '.pdf', sep = ''))
   }
 ###########################################################################################################
 ###########################################################################################################
