@@ -18,6 +18,9 @@
 ### Areas for Improvements
 * Add more sanity checks for undesired inputs.
 
-### Reference:
+### Reference
 [1] Kammers, Kai, et al. "Detecting significant changes in protein abundance." EuPA open proteomics 7 (2015): 11-19.
 
+### Cite Repository
+
+[![DOI](https://zenodo.org/badge/107143411.svg)](https://zenodo.org/badge/latestdoi/107143411)
