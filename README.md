@@ -23,6 +23,6 @@
 ### Reference
 [1] Kammers, Kai, et al. "Detecting significant changes in protein abundance." EuPA open proteomics 7 (2015): 11-19.
 
-<!--### Cite Repository-->
+### Cite Repository
 
-<!--[![DOI](https://zenodo.org/badge/107143411.svg)](https://zenodo.org/badge/latestdoi/107143411)-->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3731967.svg)](https://doi.org/10.5281/zenodo.3731967)
