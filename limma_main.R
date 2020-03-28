@@ -155,18 +155,20 @@ if(!flag){
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
   data_limma[nan_idx] <- imputed_vals_my
+  Symbol <- data$Symbol
+  Uniprot <- data$Uniprot
   ##Limma main code
   design <-
     model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
   colnames(design) <- c("Intercept", "Diff")
-  res.eb <- eb.fit(data_limma, design, data$Symbol)
+  res.eb <- eb.fit(data_limma, design, Symbol)
   Sig_FC_idx <-
     union(which(res.eb$logFC < (-FC_Cutoff)), which(res.eb$logFC > FC_Cutoff))
   Sig_Pval_mod_idx <- which(res.eb$p.mod < 0.05)
   Sig_Pval_ord_idx <- which(res.eb$p.ord < 0.05)
   Sig_mod_idx <-  intersect(Sig_FC_idx, Sig_Pval_mod_idx)
   Sig_ord_idx <-  intersect(Sig_FC_idx, Sig_Pval_ord_idx)
-  categ_Ord <- rep(c("Not Significant"), times = length(data$Symbol))
+  categ_Ord <- rep(c("Not Significant"), times = length(Symbol))
   categ_Mod <- categ_Ord
   categ_Mod[Sig_mod_idx] <- "Significant"
   categ_Ord[Sig_ord_idx] <- "Significant"
@@ -182,8 +184,8 @@ if(!flag){
   ##Save the data file
   final_data <-
     cbind(select(data, matches("^id$")),
-          data$Uniprot,
-          data$Symbol,
+          Uniprot,
+          Symbol,
           data_limma,
           dat)
   final_data <- select(final_data, -matches("^gene$"))
@@ -224,7 +226,7 @@ if(!flag){
   }
   proteingroups <- proteingroups[-idx, ] # removing indexed rows
   
-  #Extrat Uniprot and gene symbols
+  #Extract Uniprot and gene symbols
   Uniprot <- character(length = nrow(proteingroups))
   Symbol <- character(length = nrow(proteingroups))
   for (i in 1:nrow(proteingroups)) {
@@ -336,19 +338,20 @@ if(!flag){
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
   data_limma[nan_idx] <- imputed_vals_my
-
+  Symbol <- data$Symbol
+  Uniprot <- data$Uniprot
   ##Limma main code
   design <-
     model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
   colnames(design) <- c("Intercept", "Diff")
-  res.eb <- eb.fit(data_limma, design, data$Symbol)
+  res.eb <- eb.fit(data_limma, design, Symbol)
   Sig_FC_idx <-
     union(which(res.eb$logFC < (-FC_Cutoff)), which(res.eb$logFC > FC_Cutoff))
   Sig_Pval_mod_idx <- which(res.eb$p.mod < 0.05)
   Sig_Pval_ord_idx <- which(res.eb$p.ord < 0.05)
   Sig_mod_idx <-  intersect(Sig_FC_idx, Sig_Pval_mod_idx)
   Sig_ord_idx <-  intersect(Sig_FC_idx, Sig_Pval_ord_idx)
-  categ_Ord <- rep(c("Not Significant"), times = length(data$Symbol))
+  categ_Ord <- rep(c("Not Significant"), times = length(Symbol))
   categ_Mod <- categ_Ord
   categ_Mod[Sig_mod_idx] <- "Significant"
   categ_Ord[Sig_ord_idx] <- "Significant"
@@ -363,8 +366,8 @@ if(!flag){
   ##Save the data file
   final_data <-
     cbind(select(data, matches("^id$")),
-          data$Uniprot,
-          data$Symbol,
+          Uniprot,
+          Symbol,
           data_limma,
           dat)
   final_data <- select(final_data, -matches("^gene$"))
