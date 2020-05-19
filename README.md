@@ -25,4 +25,4 @@
 
 ### Cite Repository
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3731967.svg)](https://doi.org/10.5281/zenodo.3731967)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3834635.svg)](https://doi.org/10.5281/zenodo.3834635)
