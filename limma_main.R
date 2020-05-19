@@ -12,7 +12,7 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) BiocManager::install(new.packages)
 
 ## Installing CRAN packages
-list.of.packages <- c("dplyr", "stringr", "MASS", "plotly", "htmlwidgets", "rstudioapi", "webshot")
+list.of.packages <- c("dplyr", "stringr", "MASS", "matlab", "plotly", "htmlwidgets", "rstudioapi", "webshot")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 if (is.null(webshot:::find_phantom())){
@@ -22,6 +22,7 @@ if (is.null(webshot:::find_phantom())){
 library(dplyr)
 library(stringr)
 library(MASS)
+library(matlab)
 library(plotly)
 library(limma)
 library(qvalue)
@@ -142,7 +143,9 @@ if(!flag){
   data_limma <- log2(as.matrix(data[c(1:(rep_treats + rep_conts))]))
   data_limma[is.infinite(data_limma)] <- NA
   nan_idx <- which(is.na(data_limma))
-  
+  temp <- reshape(temp, nrow(data_limma)*ncol(data_limma), 1)
+  hist(temp, na.rm = TRUE, xlab = "log2(intensity)", ylab = "Frequency", 
+       main =  "All data: before imputation")
   fit <- fitdistr(c(na.exclude(data_limma)), "normal")
   mu <- as.double(fit$estimate[1])
   sigma <- as.double(fit$estimate[2])
@@ -154,7 +157,23 @@ if(!flag){
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
-  data_limma[nan_idx] <- imputed_vals_my
+  scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
+  data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+  ## Median Normalization Module
+  want_normalization <- readinteger("Enter 1, if you want to median normalized data = ")
+  if (want_normalization == 1) {
+    browser()
+    boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates before normalization"))
+    boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates before normalization"))
+    col_med <- matrixStats::colMedians(data_limma)
+    med_mat <- matlab::repmat(col_med, nrow(data_limma), 1)
+    data_limma <- data_limma - med_mat
+    boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates after normalization"))
+    boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates after normalization"))
+  }
+  temp <- reshape(temp, nrow(data_limma)*ncol(data_limma), 1)
+  hist(temp, na.rm = TRUE, xlab = "log2(intensity)", ylab = "Frequency", 
+       main =  "All data: after imputation")
   Symbol <- data$Symbol
   Uniprot <- data$Uniprot
   ##Limma main code
@@ -325,7 +344,9 @@ if(!flag){
     log2(apply(data[c(1:(rep_treats + rep_conts))], 2, as.numeric))
   data_limma[is.infinite(data_limma)] <- NA
   nan_idx <- which(is.na(data_limma))
-  
+  temp <- reshape(data_limma, nrow(data_limma)*ncol(data_limma), 1)
+  hist(temp, na.rm = TRUE, xlab = "log2(intensity)", ylab = "Frequency", 
+       main =  "All data: before imputation (nan ignored)")
   fit <- fitdistr(c(na.exclude(data_limma)), "normal")
   mu <- as.double(fit$estimate[1])
   sigma <- as.double(fit$estimate[2])
@@ -337,9 +358,26 @@ if(!flag){
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
-  data_limma[nan_idx] <- imputed_vals_my
+  scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
+  data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+ 
+   ## Median Normalization Module
+  want_normalization <- readinteger("Enter 1, if you want to median normalized data = ")
+  if (want_normalization == 1) {
+    boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates before normalization"))
+    boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates before normalization"))
+    col_med <- matrixStats::colMedians(data_limma)
+    med_mat <- matlab::repmat(col_med, nrow(data_limma), 1)
+    data_limma <- data_limma - med_mat
+    boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates after normalization"))
+    boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates after normalization"))
+  }
+  temp <- reshape(temp, nrow(data_limma)*ncol(data_limma), 1)
+  hist(temp, na.rm = TRUE, xlab = "log2(intensity)", ylab = "Frequency", 
+       main =  "All data: after imputation")
   Symbol <- data$Symbol
   Uniprot <- data$Uniprot
+  
   ##Limma main code
   design <-
     model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
