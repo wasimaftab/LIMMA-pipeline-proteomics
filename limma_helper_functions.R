@@ -55,6 +55,19 @@ readfloat <- function(str)
   return(n)
 }
 
+readfloat_0_1 <- function(str)
+{
+  n <- readline(prompt = str)
+  n <- as.double(n)
+  if (is.na(n) || (n <= 0)) {
+    writeLines("Enter a number>0 & <=1, try again")
+    n <- readfloat(str)
+  }else if (n > 1){
+    writeLines("Enter a number>0 & <=1, try again")
+  }
+  return(n)
+}
+
 readinteger_binary <- function(str)
 {
   n <- readline(prompt = str)
