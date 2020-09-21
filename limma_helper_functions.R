@@ -44,6 +44,17 @@ readinteger <- function(str)
   return(n)
 }
 
+readnumber <- function(str)
+{
+  n <- readline(prompt = str)
+  n <- as.integer(n)
+  if (is.na(n)) {
+    print("This variable expects an integer only")
+    n <- readnumber(str)
+  }
+  return(n)
+}
+
 readfloat <- function(str)
 {
   n <- readline(prompt = str)
@@ -80,6 +91,7 @@ readinteger_binary <- function(str)
 }
 
 data_sanity_check <- function(temp, exprement, exp_str) {
+  # browser()
   exprement_reps <-
     select(temp, matches(paste('^.*', exp_str, '.*$', sep = '')))
   row <- nrow(exprement_reps)
@@ -336,7 +348,8 @@ display_plotly_figs <-
         margin = m
       )
     
-    subDir <- "Results"
+    # subDir <- "Results"
+    subDir <- paste0("Results_", format(Sys.time(), "%Y%m%d_%H%M%S"))
     mainDir <- getwd()
     
     dir.create(file.path(mainDir, subDir), showWarnings = FALSE)
