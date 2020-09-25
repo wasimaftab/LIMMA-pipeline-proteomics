@@ -156,8 +156,9 @@ if(!flag){
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
-  scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
-  data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+  # scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
+  # data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+  data_limma[nan_idx] <- imputed_vals_my
   
   ## Median Normalization Module
   want_normalization <- readnumber("Enter 1, if you want to median normalize, otherwise enter any number = ")
@@ -346,8 +347,9 @@ if(!flag){
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
-  scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
-  data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+  # scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
+  # data_limma[nan_idx] <- imputed_vals_my*scaling_factor
+  data_limma[nan_idx] <- imputed_vals_my
  
    ## Median Normalization Module
   want_normalization <- readnumber("Enter 1, if you want to median normalized data = ")
