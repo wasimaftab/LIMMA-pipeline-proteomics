@@ -1,4 +1,4 @@
-### This is a pipeline to analyze proteiomic data for the paper "Molecular wiring of a mitochondrial translational feedback loop" (Mol Cell. 2020 Feb 20;77(4):887-900.e5. doi: 10.1016/j.molcel.2019.11.019. Epub 2019 Dec 26)
+### Pipeline to analyze proteomic dataset for the paper "Molecular wiring of a mitochondrial translational feedback loop" (Mol Cell. 2020 Feb 20;77(4):887-900.e5. doi: 10.1016/j.molcel.2019.11.019. Epub 2019 Dec 26)
 
 * Implementation of LIMMA (Linear Models for Microarray Data), an empirical Bayes method for two group comparision in a proteomic experiment [1].
 * The pipeline is implemented in R programming language and needed libraries are installed automatically.
