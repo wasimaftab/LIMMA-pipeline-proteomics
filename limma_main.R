@@ -12,7 +12,7 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) BiocManager::install(new.packages)
 
 ## Installing CRAN packages
-list.of.packages <- c("dplyr", "stringr", "MASS", "matlab", "plotly", "htmlwidgets", "rstudioapi", "webshot")
+list.of.packages <- c("dplyr", "stringr", "MASS", "matlab", "plotly", "htmlwidgets", "rstudioapi", "webshot", "matrixStats")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 if (is.null(webshot:::find_phantom())){
