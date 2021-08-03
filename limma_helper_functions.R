@@ -1,4 +1,27 @@
-##########Function Blocks##################################################################################
+median_normalization <- function(X, spike_in_rows = NULL){
+  if(is.matrix(X)){
+    stopifnot(length(dim(X)) == 2)
+    if(is.null(spike_in_rows)){
+      # Use all rows for normalization
+      spike_in_rows <- seq_len(nrow(X))
+    }else if(! is.numeric(spike_in_rows) && ! is.logical(spike_in_rows)){
+      stop("spike_in_rows must either be a numeric or a logical vector")
+    }else if(is.logical(spike_in_rows)){
+      if(length(spike_in_rows) != nrow(X)){
+        stop("The spike_in_rows logical vector must have one entry for each row.")
+      }else if(all(spike_in_rows == FALSE)){
+        stop("Not all elements of the spike_in_rows vector can be FALSE.")
+      }
+    }
+    Xnorm <- X
+    for(idx in seq_len(ncol(X))){
+      Xnorm[, idx] <- X[, idx, drop=FALSE] -
+        median(X[spike_in_rows, idx, drop=FALSE] - rowMeans(X[spike_in_rows, , drop=FALSE], na.rm=TRUE), na.rm=TRUE )
+    }
+    Xnorm
+  }
+}
+################################################################################
 eb.fit <- function(dat, design, gene) {
   n <- dim(dat)[1]
   fit <- lmFit(dat, design)
@@ -32,7 +55,7 @@ eb.fit <- function(dat, design, gene) {
                gene)
   return(results.eb)
 }
-
+################################################################################
 readinteger <- function(str)
 {
   n <- readline(prompt = str)
@@ -43,7 +66,21 @@ readinteger <- function(str)
   }
   return(n)
 }
-
+################################################################################
+read_k_out_of_N <- function(rep_treats, group)
+{
+  str <- paste0("Enter an integer greater than 0 but less than the number of ", group," replicates(", rep_treats, ") = ")
+  n <- as.integer(readline(prompt = str))
+  if (is.na(n) || (n <= 0)) {
+    print("Enter positive integer only")
+    n <- readinteger(str)
+  } else if(n > rep_treats){
+    print(paste("Enter positive integer less than", rep_treats))
+    n <- readinteger(rep_treats)
+  }
+  return(n)
+}
+################################################################################
 readnumber <- function(str)
 {
   n <- readline(prompt = str)
@@ -54,7 +91,7 @@ readnumber <- function(str)
   }
   return(n)
 }
-
+################################################################################
 readfloat <- function(str)
 {
   n <- readline(prompt = str)
@@ -65,7 +102,7 @@ readfloat <- function(str)
   }
   return(n)
 }
-
+################################################################################
 readfloat_0_1 <- function(str)
 {
   n <- readline(prompt = str)
@@ -78,7 +115,7 @@ readfloat_0_1 <- function(str)
   }
   return(n)
 }
-
+################################################################################
 readinteger_binary <- function(str)
 {
   n <- readline(prompt = str)
@@ -89,7 +126,7 @@ readinteger_binary <- function(str)
   }
   return(n)
 }
-
+################################################################################
 data_sanity_check <- function(temp, exprement, exp_str) {
   # browser()
   exprement_reps <-
@@ -110,8 +147,7 @@ data_sanity_check <- function(temp, exprement, exp_str) {
   }
   return(exprement_reps)
 }
-
-
+################################################################################
 display_plotly_figs <-
   function(dat,
            FC_Cutoff,
@@ -363,6 +399,4 @@ display_plotly_figs <-
     # plotly::orca(p1, file = paste(filename_mod, '.pdf', sep = ''))
     # plotly::orca(p2, file = paste(filename_ord, '.pdf', sep = ''))
   }
-###########################################################################################################
-###########################################################################################################
 ###########################################################################################################

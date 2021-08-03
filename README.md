@@ -11,9 +11,17 @@
  |--------|---------|--------|----------|----------|-----------|-------------|----------|
  |P25554  |SGF29    |0       |     0    |    0     |   2810900 |    4903800  |     0    |
 * Proteins that do not participate in two group comparison are saved in the results folder as tsv files with their iBAQ/LFQ intensities.
+* Code further removes the proteins based on k out of N criteria: where **N** is the number of replicates in one group (treatment/control) and for each protein, **k** implies the desired number of non zero values out of **N** replicates. The code applies this criterion individually for each group and keeps only those proteins that satisfy it in both the groups simultaneously.
 * Code will ask you to provide treatment and control names. It will guide by printing them on your RStudio console. For example, in the proteinsgroups file in the Example folder there are three treatment replicates iBAQ CA_1, iBAQ CA_2, iBAQ CA_3 and three control replicates iBAQ FA_1, iBAQ FA_2, iBAQ FA_3. So, if you input partial names i.e. ca or CA for the treatment in this example, the code is able to recognise the desired columns.
 * In other words, code will force you to provide as input correct names for treatment and control as it appears in the proteingroups file. Part of the name (case insensitive) should also be fine.
-* It will also ask users if they want to median normalize their data prior to two-group comparison 
+* It will also ask users if they want to normalize their data prior to two-group comparison. There are two modes of normalization supported.
+
+  1. **Normalise by subtracting median:** This method normalizes the protein intensities in each experiemnt by substrating the median 
+      of the corresponding experiment.
+      
+  2. **Column wise median normalization of the data matrix:** This method calculates for each sample the median change (i.e. the difference    between the observed value and the row average) and subtracts it from each row. Missing values are ignored in the procedure. The method is based
+on the assumption that a majority of the rows did not change. By default, all the rows are used for normalization but if we assume that the first 3 proteins are spike-ins then the call to median_normalization function needs to be modified as: median_normalization(data, spike_in_rows = 1:3)
+     
 * After successful run, it will create a volcano plots in html format and a tsv file containing final data inside a folder called "Results_timestamp" with the current system "timestamp" in the same directory where the limma_main.R file is present. 
 * You can view the plot in any browser and save it as png by clicking camera icon in plot
 * In addition, the code will save 'exclusively enriched' proteins (if any) in control and treatment/bait replicates with corresponding LFQ/iBAQ values in the "Results_timestamp" folder.
