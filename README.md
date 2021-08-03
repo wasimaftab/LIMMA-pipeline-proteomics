@@ -5,7 +5,7 @@
 * Implementation of LIMMA (Linear Models for Microarray Data), an empirical Bayes method for two group comparision in a proteomic experiment [1].
 * The pipeline is implemented in R programming language and all the required packages will auto install when the script is run.
 * Run the limma_main.R code by clicking **Source** in RStudio and select a MaxQuant outputted proteingroups.txt file (see Example folder). The helper functions must be in the same directory as the main. 
-* There are two modes: either use full data or remove exclusive proteins before analysis. Proteins that have zero intensities in all the replicates of one group are defined as exclusive proteins. For example, an 'exclusively enriched' proteins in treatment(Cbp1) is defined as follows
+* There are two modes: either use full data or remove exclusive proteins before analysis. Proteins that have zero intensities in all the replicates of one group are defined as exclusive proteins. For example, an 'exclusively enriched' protein in treatment(Cbp1) is defined as follows
 
  |Uniprot | Symbol  |Cbp1_1  |  Cbp1_2  |  Cbp1_3  |  contrl_1 |   contrl_2  |  contrl_3|
  |--------|---------|--------|----------|----------|-----------|-------------|----------|
