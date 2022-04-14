@@ -188,6 +188,9 @@ width <- sigma_cutoff * sigma
 new_width <- width * new_width_cutoff
 new_sigma <- new_width / sigma_cutoff
 new_mean <- mu - downshift * sigma
+
+## set seed to reproduce results
+set.seed(100)
 imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
 data_limma[nan_idx] <- imputed_vals_my
 
