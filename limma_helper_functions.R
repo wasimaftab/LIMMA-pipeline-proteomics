@@ -67,18 +67,43 @@ readinteger <- function(str)
   return(n)
 }
 ################################################################################
-read_k_out_of_N <- function(rep_treats, group)
-{
-  str <- paste0("Enter an integer greater than 0 but less than the number of ", group," replicates(", rep_treats, ") = ")
-  n <- as.integer(readline(prompt = str))
-  if (is.na(n) || (n <= 0)) {
-    print("Enter positive integer only")
-    n <- readinteger(str)
-  } else if(n > rep_treats){
-    print(paste("Enter positive integer less than", rep_treats))
-    n <- readinteger(rep_treats)
+# read_k_out_of_N <- function(rep_treats, group)
+# {
+#   str <- paste0("Enter an integer greater than 0 but less than the number of ", group," replicates(", rep_treats, ") = ")
+#   n <- as.integer(readline(prompt = str))
+#   if (is.na(n) || (n <= 0)) {
+#     print("Enter positive integer only")
+#     n <- readinteger(str)
+#   } else if(n > rep_treats){
+#     print(paste("Enter positive integer less than", rep_treats))
+#     n <- readinteger(rep_treats)
+#   }
+#   return(n)
+# }
+###
+## Sanity check k out of N replicates
+get_k_out_of_N <- function(N, exp_type, type_molecule = "protein") {
+  while (1) {
+    k <-
+      as.integer(readline(
+        paste(
+          'Enter k, to select only',
+          paste0(type_molecule, "s"),
+          'that have k non zero values out of',
+          N,
+          exp_type,
+          'replicates and k>0 = '
+        )
+      ))
+    if (k > N) {
+      cat('k must be an integer>0 and <=', N, 'TRY AGAIN\n')
+    } else if (k <= 0) {
+      cat('k must be an integer>0 and <=', N, 'TRY AGAIN\n')
+    } else {
+      break
+    }
   }
-  return(n)
+  return(k)
 }
 ################################################################################
 readnumber <- function(str)
@@ -157,16 +182,16 @@ display_plotly_figs <-
               r = 40,
               b = 55,
               t = 40)
-    
+
     f <- list(family = "Arial, sans-serif",
               size = 20,
               # color = "#7f7f7f")
               color = 'black')
-    
+
     f2 <- list(family = "Arial, sans-serif",
                size = 14,
                color = 'black')
-    
+
     x_axis <- list(
       # constraintoward = "bottom",
       zeroline = TRUE,
@@ -187,7 +212,7 @@ display_plotly_figs <-
       rangemode = "tozero",
       tickfont = f2
     )
-    
+
     y_axis <- list(
       zeroline = TRUE,
       showline = FALSE,
@@ -206,7 +231,7 @@ display_plotly_figs <-
       rangemode = "nonnegative",
       tickfont = f2
     )
-    
+
     # Plot Limma result
     p1 <-
       plot_ly(
@@ -237,7 +262,7 @@ display_plotly_figs <-
       ) %>%
       add_trace(marker = list(line = list(
         color = toRGB('black'),
-        width = 0.5
+        width = 1
       )),
       showlegend = TRUE) %>%
       layout(
@@ -294,8 +319,8 @@ display_plotly_figs <-
         titlefont = f,
         margin = m
       )
-    
-    
+
+
     # Plot Ordinary t-test result
     p2 <-
       plot_ly(
@@ -326,7 +351,7 @@ display_plotly_figs <-
       ) %>%
       add_trace(marker = list(line = list(
         color = toRGB('black'),
-        width = 0.5
+        width = 1
       )),
       showlegend = TRUE) %>%
       layout(
@@ -383,18 +408,18 @@ display_plotly_figs <-
         titlefont = f,
         margin = m
       )
-    
+
     # subDir <- "Results"
     subDir <- paste0("Results_", format(Sys.time(), "%Y%m%d_%H%M%S"))
     mainDir <- getwd()
-    
+
     dir.create(file.path(mainDir, subDir), showWarnings = FALSE)
     setwd(file.path(mainDir, subDir))
-    
+
     # ## Save as .html
     htmlwidgets::saveWidget(as_widget(p1), paste(filename_mod, '.html', sep = ''))
     htmlwidgets::saveWidget(as_widget(p2), paste(filename_ord, '.html', sep = ''))
-    
+
     # ## Save as .pdf
     # plotly::orca(p1, file = paste(filename_mod, '.pdf', sep = ''))
     # plotly::orca(p2, file = paste(filename_ord, '.pdf', sep = ''))

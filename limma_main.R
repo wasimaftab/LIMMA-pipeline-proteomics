@@ -97,7 +97,7 @@ if (!flag) {
   temp <- select(proteingroups, matches("(ibaq|lfq)"))
   print(names(temp))
   # ################################################################################################
-  
+
   #Extract Uniprot and gene symbols
   Uniprot <- character(length = nrow(proteingroups))
   Symbol <- character(length = nrow(proteingroups))
@@ -108,14 +108,14 @@ if (!flag) {
     splits <- unlist(str_match(splits[3], "GN=(.*?) PE="))
     Symbol[i] <- splits[2]
   }
-  
+
   #Extract required data for Limma
   treatment <-
     readline('Enter treatment name(case insensitive) as it appeared in the iBAQ/LFQ column= ')
   control <-
     readline('Enter control name(case insensitive) as it appeared in the iBAQ/LFQ column= ')
   ibaq <- readinteger_binary('Enter 1 for iBAQ or 0 for LFQ= ')
-  
+
   if (ibaq) {
     temp <-
       select(proteingroups, matches(paste('^.*', "ibaq", '.*$', sep = '')))
@@ -144,7 +144,7 @@ if (!flag) {
             Uniprot,
             Symbol)
   }
-  
+
   ## Impute data
   print(names(data))
   rep_treats <-
@@ -152,7 +152,7 @@ if (!flag) {
   rep_conts <-
     readinteger("Enter the number of control replicates=")
   FC_Cutoff <- readfloat("Enter the log fold change cut off=")
-  
+
   ## removing blank rows
   temp <-
     as.matrix(rowSums(apply(data[, 1:(rep_treats + rep_conts)], 2, as.numeric)))
@@ -160,7 +160,7 @@ if (!flag) {
   if (length(idx)) {
     data <- data[-idx,]
   }
-  
+
   data_limma <- log2(as.matrix(data[c(1:(rep_treats + rep_conts))]))
   data_limma[is.infinite(data_limma)] <- NA
   nan_idx <- which(is.na(data_limma))
@@ -177,11 +177,14 @@ if (!flag) {
   new_width <- width * new_width_cutoff
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
+
+  ## set seed to reproduce results
+  set.seed(100)
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
   # scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
   # data_limma[nan_idx] <- imputed_vals_my*scaling_factor
   data_limma[nan_idx] <- imputed_vals_my
-  
+
   ## Median Normalization Module
   want_normalization <- as.integer(readline(
     cat(
@@ -238,7 +241,7 @@ if (!flag) {
       NegLogPvalMod = (-log10(res.eb$p.mod)),
       NegLogPvalOrd = (-log10(res.eb$p.ord))
     )
-  
+
   ##Save the data file
   final_data <-
     cbind(select(data, matches("^id$")),
@@ -250,7 +253,7 @@ if (!flag) {
   filename_final_data <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_final_data')
   # readline('Enter a filename for final data= ')
-  
+
   ##Create plotly object and save plot as html
   filename_mod <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_limma_plot')
@@ -258,9 +261,9 @@ if (!flag) {
   filename_ord <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_ord_plot')
   # readline('Enter a filename for ordinary t-test plot= ')
-  
+
   display_plotly_figs(final_data, FC_Cutoff, filename_mod, filename_ord)
-  
+
   write.table(
     final_data,
     paste(filename_final_data, '.tsv', sep = ''),
@@ -273,7 +276,7 @@ if (!flag) {
   ## Display data to faciliate choice of treatment and control
   temp <- select(proteingroups, matches("(ibaq|lfq)"))
   print(names(temp))
-  
+
   #Extract Uniprot and gene symbols
   Uniprot <- character(length = nrow(proteingroups))
   Symbol <- character(length = nrow(proteingroups))
@@ -284,7 +287,7 @@ if (!flag) {
     splits <- unlist(str_match(splits[3], "GN=(.*?) PE="))
     Symbol[i] <- splits[2]
   }
-  
+
   ## Extract data for Limma
   treatment <-
     readline('Enter treatment name(case insensitive) as it appeared in the iBAQ/LFQ column= ')
@@ -292,7 +295,7 @@ if (!flag) {
     readline('Enter control name(case insensitive) as it appeared in the iBAQ/LFQ column= ')
   ibaq <-
     readinteger_binary('Enter 1 for iBAQ or 0 for LFQ= ')
-  
+
   if (ibaq) {
     temp <-
       select(proteingroups, matches(paste('^.*', "ibaq", '.*$', sep = '')))
@@ -322,7 +325,7 @@ if (!flag) {
             Uniprot,
             Symbol)
   }
-  
+
   ## Find out Blank rows, i.e. proteins with all zeros in treatment and in control, see followig example
   ## iBAQ.Mrpl40_1 iBAQ.Mrpl40_2 iBAQ.Mrpl40_3 iBAQ.Kgd4_1 iBAQ.Kgd4_2 iBAQ.Kgd4_3  id Uniprot Symbol
   ## -------------------------------------------------------------------------------------------------
@@ -339,7 +342,7 @@ if (!flag) {
   if (length(idx)) {
     data <- data[-idx,] # removing blank rows
   }
-  
+
   ## Find out exclusive proteins in control group, i.e. proteins with all zeros in treatment and all/some values in control, see followig example
   ## Uniprot  Symbol  treat_1   treat_2   treat_3   contrl_1    contrl_2    contrl_3
   ## -----------------------------------------------------------------------------------
@@ -358,7 +361,7 @@ if (!flag) {
             sep = "")
     data <- data[-idx, ] # removing indexed rows
   }
-  
+
   ## Find out exclisive proteins in treatment group, i.e. proteins with all zeros in control and all/some values in treatment, see followig example
   ## iBAQ.Mrpl40_1 iBAQ.Mrpl40_2 iBAQ.Mrpl40_3 iBAQ.Kgd4_1 iBAQ.Kgd4_2 iBAQ.Kgd4_3  id   Uniprot   Symbol
   ## -----------------------------------------------------------------------------------------------------
@@ -366,7 +369,7 @@ if (!flag) {
   ## -----------------------------------------------------------------------------------------------------
   temp <-
     as.matrix(rowSums(apply(data[, (rep_treats + 1):(rep_conts + rep_treats)], 2, as.numeric)))
-  
+
   idx <- which(temp == 0)
   if (length(idx)) {
     outliers_control <- data[idx,]
@@ -378,11 +381,13 @@ if (!flag) {
             sep = "")
     data <- data[-idx, ] # removing indexed rows
   }
-  
+
   ## Extract only those proteins/peptides that has intensity values in
   ## K out of N replicates in each group
-  k_out_N_treatment <- read_k_out_of_N(rep_treats, 'treatment')
-  k_out_N_control <- read_k_out_of_N(rep_treats, 'control')
+  # k_out_N_treatment <- read_k_out_of_N(rep_treats, 'treatment')
+  # k_out_N_control <- read_k_out_of_N(rep_treats, 'control')
+  k_out_N_treatment <- get_k_out_of_N(rep_treats, 'treatment')
+  k_out_N_control <- get_k_out_of_N(rep_conts, 'control')
   idx_nz_treatment <-
     which(rowSums(data[, 1:rep_treats] != 0) >= k_out_N_treatment)
   idx_nz_control <-
@@ -410,11 +415,14 @@ if (!flag) {
   new_width <- width * new_width_cutoff
   new_sigma <- new_width / sigma_cutoff
   new_mean <- mu - downshift * sigma
+
+  ## set seed to reproduce results
+  set.seed(100)
   imputed_vals_my = rnorm(length(nan_idx), new_mean, new_sigma)
   # scaling_factor <- readfloat_0_1("Enter a number > 0 and <=1 to scale imputed values = ")
   # data_limma[nan_idx] <- imputed_vals_my*scaling_factor
   data_limma[nan_idx] <- imputed_vals_my
-  
+
   ## Median Normalization Module
   want_normalization <- as.integer(readline(
     cat(
@@ -427,17 +435,21 @@ if (!flag) {
     # browser()
     # boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates before normalization"))
     # boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates before normalization"))
+    par(mar=c(1,1,1,1))
     boxplot(data_limma[, 1:(rep_treats + rep_conts)], main = "data before median substract normalization")
     col_med <- matrixStats::colMedians(data_limma)
     med_mat <- matlab::repmat(col_med, nrow(data_limma), 1)
     data_limma <- data_limma - med_mat
+    par(mar=c(1,1,1,1))
     boxplot(data_limma[, 1:(rep_treats + rep_conts)], main = "data after median substract normalization")
     # browser()
     # boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates after normalization"))
     # boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates after normalization"))
   } else if (want_normalization == 2) {
+    par(mar=c(1,1,1,1))
     boxplot(data_limma[, 1:(rep_treats + rep_conts)], main = "data before column wise median normalization")
     data_limma <- median_normalization(data_limma)
+    par(mar=c(1,1,1,1))
     boxplot(data_limma[, 1:(rep_treats + rep_conts)], main = "data after column wise median normalization")
     # browser()
     # boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates after normalization"))
@@ -448,7 +460,7 @@ if (!flag) {
   #      main =  "All data: after imputation")
   Symbol <- data$Symbol
   Uniprot <- data$Uniprot
-  
+
   ##Limma main code
   design <-
     model.matrix( ~ factor(c(rep(2, rep_treats), rep(1, rep_conts))))
@@ -483,7 +495,7 @@ if (!flag) {
   filename_final_data <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_final_data')
   # readline('Enter a filename for final data= ')
-  
+
   ##Create plotly object and save plot as html
   filename_mod <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_limma_plot')
@@ -491,9 +503,9 @@ if (!flag) {
   filename_ord <-
     paste0(format(Sys.time(), "%Y%m%d_%H%M%S"), '_ord_plot')
   # readline('Enter a filename for ordinary t-test plot= ')
-  
+
   display_plotly_figs(final_data, FC_Cutoff, filename_mod, filename_ord)
-  
+
   write.table(
     final_data,
     paste(filename_final_data, '.tsv', sep = ''),
@@ -511,8 +523,8 @@ if (!flag) {
       col.names = TRUE
     )
   }
-  
-  
+
+
   ## Write outliers in control
   if (exists('outliers_control')) {
     write.table(
@@ -523,7 +535,7 @@ if (!flag) {
       col.names = TRUE
     )
   }
-  
+
   setwd(cur_dir)
-  
+
 } ### END of if(flag)else
