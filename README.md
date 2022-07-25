@@ -53,5 +53,4 @@ on the assumption that a majority of the rows did not change. By default, all th
 
 ### Cite Repository
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4050581.svg)](https://doi.org/10.5281/zenodo.4050581)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6342165.svg)](https://doi.org/10.5281/zenodo.6342165)
