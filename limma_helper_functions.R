@@ -153,7 +153,6 @@ readinteger_binary <- function(str)
 }
 ################################################################################
 data_sanity_check <- function(temp, exprement, exp_str) {
-  # browser()
   exprement_reps <-
     select(temp, matches(paste('^.*', exp_str, '.*$', sep = '')))
   row <- nrow(exprement_reps)

@@ -57,6 +57,7 @@ temp <- unlist(strsplit(myFilePath, "\\", fixed = TRUE))
 proteingroups <-
   as.data.frame(read.table(myFilePath, header = TRUE, sep = "\t"))
 
+
 ## Remove contaminant proteins("+" identified rows) from proteingroups dataframe
 temp <-
   select(
@@ -73,8 +74,11 @@ if (!nrow(temp) * ncol(temp)) {
     index <- which(unlist(!is.na(match(temp[, i], "+"))))
     idx <- union(idx, index)
   }
-  proteingroups <- proteingroups[-idx, ] # removing indexed rows
-  print(paste("Removed", length(idx), "contaminat proteins"))
+
+  if (length(idx) != 0){
+    proteingroups <- proteingroups[-idx, ] # removing indexed rows
+    print(paste("Removed", length(idx), "contaminat proteins"))
+  }
 }
 ######################################################################################################
 ## Choose if you want to remove outliers before analysis
@@ -194,7 +198,6 @@ if (!flag) {
     )
   ))
   if (want_normalization == 1) {
-    browser()
     # boxplot(data_limma[,1:rep_treats], main = paste(treatment, "replicates before normalization"))
     # boxplot(data_limma[,(rep_treats+1):(rep_treats+rep_conts)], main = paste(control, "replicates before normalization"))
     par(mar=c(1,1,1,1))
